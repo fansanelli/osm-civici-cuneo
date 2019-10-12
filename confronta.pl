@@ -55,7 +55,8 @@ while (my $line2 = <f2>) {
     if ($values2[0] =~ /^(CUNEO ________________________|RESIDENTE ESTERO|SENZA FISSA DIMORA)$/i) {
       $skip++;
     } else {
-      my $comparable = uc fix_name($values2[0].$values2[1].$values2[2]);
+      my $esponente = $values2[2] =~ /^[A-z]+$/ ? $values2[2] : '';
+      my $comparable = uc fix_name($values2[0].$values2[1].$esponente);
       if (grep { $_ eq $comparable } @osmdata) {
         push @goodosmdata, $comparable,
         $found++;
