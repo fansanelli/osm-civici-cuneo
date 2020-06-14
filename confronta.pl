@@ -48,15 +48,16 @@ open(f2, "<$ARGV[1]");
 while (my $line2 = <f2>) {
   chomp($line2);
   my @values2 = split(";", $line2, -1);
-  #                         0 12 3        45  6
-  #CIRCONVALLAZIONE BOVESANA;8;;N;SPINETTA;;825
-  if (scalar(@values2)>6) {
+  # NEW SCHEMA (2020-01-22)
+  #                         01 23 4 5        67  8
+  #CIRCONVALLAZIONE BOVESANA;;8;;S;N;SPINETTA;;825
+  if (scalar(@values2)>8) {
     $total++;
-    if ($values2[0] =~ /^(CUNEO ________________________|RESIDENTE ESTERO|SENZA FISSA DIMORA)$/i) {
+    if ($total > 1 && $values2[1] ne '') {
       $skip++;
     } else {
-      my $esponente = $values2[2] =~ /^[A-z]+$/ ? $values2[2] : '';
-      my $comparable = uc fix_name($values2[0].$values2[1].$esponente);
+      my $esponente = $values2[3] =~ /^[A-z]+$/ ? $values2[3] : '';
+      my $comparable = uc fix_name($values2[0].$values2[2].$esponente);
       if (grep { $_ eq $comparable } @osmdata) {
         push @goodosmdata, $comparable,
         $found++;
