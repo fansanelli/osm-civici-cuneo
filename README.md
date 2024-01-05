@@ -4,7 +4,7 @@ Utility di confronto per l'elenco vie e numeri civici messo a disposizione dal c
 
 # requirements
 
-- File "Elenco_Vie_Numeri_Civici_Comune_Cuneo_Aggiornato_31_ottobre_2018.xlsx" prelevato da:
+- File "Vie_numeri_civici_072021.xlsx" prelevato da:
 
 http://www.comune.cuneo.it/segreteria-generale-e-servizi-demografici/toponomastica/stradario-comunale.html
 

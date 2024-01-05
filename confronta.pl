@@ -12,7 +12,7 @@ sub fix_name {
   $name = $name =~ s/ù/u/ri;
   $name = $name =~ s/monsignore/monsignor/ri;
   $name = $name =~ s/lungogesso papa/lungogesso/ri;
-  $name = $name =~ s/san giuseppe cottolengo/cottolengo/ri;
+  $name = $name =~ s/canonico/can./ri;
   return $name;
 }
 
@@ -48,22 +48,18 @@ open(f2, "<$ARGV[1]");
 while (my $line2 = <f2>) {
   chomp($line2);
   my @values2 = split(";", $line2, -1);
-  # NEW SCHEMA (2020-01-22)
-  #                         01 23 4 5        67  8
-  #CIRCONVALLAZIONE BOVESANA;;8;;S;N;SPINETTA;;825
-  if (scalar(@values2)>8) {
+  # NEW NEW SCHEMA (2024-01-05)
+  #  0      1         2                 3               4            5               6
+  #VIA;CIVICO;ESPONENTE;CIVICO_ANAGRAFICO;ZONA_STATISTICA;SEZIONE_ELET;ZONA_CENSIMENTO
+  if (scalar(@values2)>6) {
     $total++;
-    if ($total > 1 && $values2[1] ne '') {
-      $skip++;
+    my $esponente = $values2[2] =~ /^[A-z]+$/ ? $values2[2] : '';
+    my $comparable = uc fix_name($values2[0].$values2[1].$esponente);
+    if (grep { $_ eq $comparable } @osmdata) {
+      push @goodosmdata, $comparable,
+      $found++;
     } else {
-      my $esponente = $values2[3] =~ /^[A-z]+$/ ? $values2[3] : '';
-      my $comparable = uc fix_name($values2[0].$values2[2].$esponente);
-      if (grep { $_ eq $comparable } @osmdata) {
-        push @goodosmdata, $comparable,
-        $found++;
-      } else {
-        print "$line2\n";
-      }
+      print "$line2\n";
     }
   }
 }
